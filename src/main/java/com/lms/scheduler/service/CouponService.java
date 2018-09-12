@@ -1,5 +1,15 @@
 package com.lms.scheduler.service;
 
-public interface CouponService {
+import java.util.List;
 
+import com.lms.scheduler.domain.Coupon;
+
+public interface CouponService {
+	public List<Coupon> getLMSUnregisteredUsedECoupon();
+	
+	public List<Coupon> getLMSUnregisteredRedeemedECoupon();
+	
+	public void setUsedECouponRegistered(Coupon coupon);
+	
+	public void setRedeemECouponRegistered(Coupon coupon);
 }
