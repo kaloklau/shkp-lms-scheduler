@@ -37,7 +37,7 @@ public interface CouponMapper {
 			+ " FROM coupon_redemption_transaction crt"
 			+ " WHERE crt.status = 'R' "
 			+ " AND crt.redeem_datetime is not NULL" 
-			+ " AND crt.coupon_id IN ( SELECT coupon_id FROM shk_coupon_sync WHERE redeem_registered != 'Y' AND issue_registered = 'Y' )  ")
+			+ " AND crt.coupon_id IN ( SELECT coupon_id FROM shk_coupon_sync WHERE ( redeem_registered != 'Y' or redeem_registered IS NULL ) AND issue_registered = 'Y' )  ")
 	List<Coupon> getLMSUnregisteredRedeemedECoupon();		
 	
 	@Insert(" INSERT INTO shk_coupon_sync (coupon_id,issue_registered,issue_reg_date,created_by,create_date)"
@@ -45,7 +45,7 @@ public interface CouponMapper {
 			+ " ON DUPLICATE KEY UPDATE issue_reg_date = NOW(), issue_registered = 'Y' ")
 	void setUsedECouponRegistered(Coupon coupon ); 
 	
-	@Update( "update shk_coupon_sync SET redeem_reg_date = NOW() , redeem_registered = 'Y' WHERE coupon_id = #{couponId}")
+	@Update( "update shk_coupon_sync SET redeem_reg_date = NOW() , redeem_registered = 'Y', claim_id = #{claimId} , claim_no = #{claimNo} WHERE coupon_id = #{couponId}")
 	void setRedeemECouponRegistered(Coupon coupon); 
 	
 	

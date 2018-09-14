@@ -8,6 +8,8 @@ import com.lms.scheduler.service.*;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class LmsScheduler {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private CouponService couponService;
 	
@@ -22,8 +26,17 @@ public class LmsScheduler {
 	private ShkpLmsClientService shkLmsApiService; 
 	
 	@Scheduled(fixedRate = 2000000)
+	public void devTesting() {
+		logger.info("running DEV test");
+		logger.debug("running DEV test D");
+		logger.error("running DEV test E");
+		sendUsedCouponToLMS();
+		sendRedeemedCouponToLMS();
+	}
+	
+	@Scheduled(cron="0 30 0 1,14 * *")
 	public void sendRedeemedCouponToLMS() {
-		System.out.println("Scheduler running sendUsedCouponToLMS at " + new Date());
+		System.out.println("Scheduler running sendRedeemedCouponToLMS at " + new Date());
 		List<Coupon> couponList = couponService.getLMSUnregisteredRedeemedECoupon(); 
 		
 		if ( couponList != null && couponList.size() != 0 ) {
@@ -35,7 +48,9 @@ public class LmsScheduler {
 			
 				RedeemedECouponLmsReplyJson replyJsonObj = shkLmsApiService.postRedeemECouponAPI(c);
 				if ( replyJsonObj != null ) {
-					if ( replyJsonObj.isSuccessResponse() ) {  
+					if ( replyJsonObj.isSuccessResponse() ) { 
+						c.setClaimId(replyJsonObj.getClaimId());
+						c.setClaimNo(replyJsonObj.getClaimNo());
 						couponService.setRedeemECouponRegistered(c);
 					} else {
 						System.out.println("REDEEM REG-API return failed : " + replyJsonObj.getMessage() );
@@ -50,7 +65,7 @@ public class LmsScheduler {
 	}
 	
 	
-	@Scheduled(fixedRate = 2000000)
+	@Scheduled(cron="0 0 0 1,14 * *")
 	public void sendUsedCouponToLMS() {
 		System.out.println("Scheduler running sendUsedCouponToLMS at " + new Date() );
 		
@@ -71,6 +86,8 @@ public class LmsScheduler {
 					System.out.println("unexpected error !" );
 				}
 			} 
+		} else {
+			System.out.println("NO used coupon needed to be registered");
 		}
 		
 		

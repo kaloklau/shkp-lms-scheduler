@@ -12,7 +12,10 @@ public class Coupon implements Serializable{
 	private Date redeemDate;
 	private int mallId; 
 	private int shopId;
-
+	private String claimId; 
+	private String claimNo;
+	
+	
 	public String getCouponId() {
 		return couponId;
 	}
@@ -70,6 +73,24 @@ public class Coupon implements Serializable{
 	} 
 	
 	
+	
+	
+	public String getClaimId() {
+		return claimId;
+	}
+
+	public void setClaimId(String claimId) {
+		this.claimId = claimId;
+	}
+
+	public String getClaimNo() {
+		return claimNo;
+	}
+
+	public void setClaimNo(String claimNo) {
+		this.claimNo = claimNo;
+	}
+
 	public void dumpDetails() {
 		
 		System.out.println("couponId : " + couponId );

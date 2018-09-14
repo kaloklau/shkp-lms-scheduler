@@ -32,4 +32,13 @@ public class RedeemedECouponLmsReplyJson {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("claimId:" + claimId + "\n");
+		sb.append("claimNo:" + claimNo + "\n");
+		sb.append("message:" + message + "\n");
+		return sb.toString();
+	}
 }

@@ -3,6 +3,7 @@ package com.lms.scheduler.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,10 +26,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
-	// TOOD : put to property files 
+		
+	@Value("${shk.lms.regUsedECoupon.url}")
 	private static final String SHK_LMS_REG_ISSUED_EGIFT_API_URI = "http://dev.kaishing.hk/mobile/liveeasy/hs/hs_mso_msg"; 
+	
+	
+	@Value("${shk.lms.regRedeemedECoupon.url}")
 	private static final String SHK_LMS_REG_REDDEMED_EGIFT_API_URI = "http://dev.kaishing.hk/mobile/liveeasy/hs/hs_mso_msg2";
+	
+	
+	@Value("${shk.lms.api.subsystemId}")
 	private static final String SUB_SYSTEM_ID = "1"; 
+	
+	
+	@Value("${shk.lms.api.authenKey}")
 	private static final String AUTHEN_KEY = "sdhfskdjhflsdfsdf";
 	
 	
@@ -66,6 +77,7 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 			if ( responseStr != null ) {
 				try {
 					RedeemedECouponLmsReplyJson replyJsonObj = mapper.readValue(responseStr, RedeemedECouponLmsReplyJson.class);
+					System.out.println("redeemed reply JSON obj is : " + replyJsonObj );
 					return replyJsonObj;
 				} catch (JsonParseException e) {
 					// TODO Auto-generated catch block

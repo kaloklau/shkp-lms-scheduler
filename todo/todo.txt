@@ -1,0 +1,1 @@
+(1) finetune SQL to cater for e-gift condition. 
