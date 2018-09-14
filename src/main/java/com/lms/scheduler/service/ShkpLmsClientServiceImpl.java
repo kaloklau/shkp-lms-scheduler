@@ -32,19 +32,19 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Value("${shk.lms.regUsedECoupon.url}")
-	private static final String SHK_LMS_REG_ISSUED_EGIFT_API_URI = "http://dev.kaishing.hk/mobile/liveeasy/hs/hs_mso_msg"; 
+	private  String SHK_LMS_REG_ISSUED_EGIFT_API_URI; 
 	
 	
 	@Value("${shk.lms.regRedeemedECoupon.url}")
-	private static final String SHK_LMS_REG_REDDEMED_EGIFT_API_URI = "http://dev.kaishing.hk/mobile/liveeasy/hs/hs_mso_msg2";
+	private String SHK_LMS_REG_REDDEMED_EGIFT_API_URI;
 	
 	
 	@Value("${shk.lms.api.subsystemId}")
-	private static final String SUB_SYSTEM_ID = "1"; 
+	private String SUB_SYSTEM_ID; 
 	
 	
 	@Value("${shk.lms.api.authenKey}")
-	private static final String AUTHEN_KEY = "sdhfskdjhflsdfsdf";
+	private String AUTHEN_KEY;
 	
 	
 

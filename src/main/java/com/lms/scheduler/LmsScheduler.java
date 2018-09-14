@@ -25,7 +25,7 @@ public class LmsScheduler {
 	@Autowired 
 	private ShkpLmsClientService shkLmsApiService; 
 	
-	@Scheduled(fixedRate = 2000000)
+	//@Scheduled(fixedRate = 2000000)
 	public void devTesting() {
 		logger.info("running DEV test");
 		sendUsedCouponToLMS();
