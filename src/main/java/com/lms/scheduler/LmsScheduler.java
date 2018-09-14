@@ -28,21 +28,20 @@ public class LmsScheduler {
 	@Scheduled(fixedRate = 2000000)
 	public void devTesting() {
 		logger.info("running DEV test");
-		logger.debug("running DEV test D");
-		logger.error("running DEV test E");
 		sendUsedCouponToLMS();
 		sendRedeemedCouponToLMS();
+		
 	}
 	
 	@Scheduled(cron="0 30 0 1,14 * *")
 	public void sendRedeemedCouponToLMS() {
-		System.out.println("Scheduler running sendRedeemedCouponToLMS at " + new Date());
+		logger.info("Scheduler running sendRedeemedCouponToLMS at " + new Date());
 		List<Coupon> couponList = couponService.getLMSUnregisteredRedeemedECoupon(); 
 		
 		if ( couponList != null && couponList.size() != 0 ) {
 			
 			
-			System.out.println("Found redeemed coupon needed to be registered");
+			logger.info("Found redeemed coupon needed to be registered");
 			
 			for( Coupon c : couponList ) {
 			
@@ -53,10 +52,10 @@ public class LmsScheduler {
 						c.setClaimNo(replyJsonObj.getClaimNo());
 						couponService.setRedeemECouponRegistered(c);
 					} else {
-						System.out.println("REDEEM REG-API return failed : " + replyJsonObj.getMessage() );
+						logger.info("REDEEM REG-API return failed : " + replyJsonObj.getMessage() );
 					} 
 				}  else {
-					System.out.println("REDEEM REG-API com. failure"  );
+					logger.info("REDEEM REG-API com. failure"  );
 				}
 			} 
 		}
@@ -67,7 +66,7 @@ public class LmsScheduler {
 	
 	@Scheduled(cron="0 0 0 1,14 * *")
 	public void sendUsedCouponToLMS() {
-		System.out.println("Scheduler running sendUsedCouponToLMS at " + new Date() );
+		logger.info("Scheduler running sendUsedCouponToLMS at " + new Date() );
 		
 		
 		List<Coupon> couponList = couponService.getLMSUnregisteredUsedECoupon();
@@ -76,18 +75,18 @@ public class LmsScheduler {
 			IssuedECouponLmsReplyJson replyJsonObj = shkLmsApiService.postIssuedECouponAPI(couponList);
 			if ( replyJsonObj != null && replyJsonObj.getEvent() != null ) {
 				if ( replyJsonObj.getEvent().equals(IssuedECouponLmsReplyJson.APIEventType.SUCCESS.getValue()) ) {
-					System.out.println("Success in calling reg-use API, going to save success status to DB"); 
+					logger.info("Success in calling reg-use API, going to save success status to DB"); 
 					for( Coupon c : couponList ) {
 						couponService.setUsedECouponRegistered(c);
 					}
 				} else if (  replyJsonObj.getEvent().equals(IssuedECouponLmsReplyJson.APIEventType.FAIL.getValue()) ) {
-					System.out.println("API returns failure : " +  replyJsonObj.getErrorMessage() );
+					logger.info("API returns failure : " +  replyJsonObj.getErrorMessage() );
 				} else {
-					System.out.println("unexpected error !" );
+					logger.info("unexpected error !" );
 				}
 			} 
 		} else {
-			System.out.println("NO used coupon needed to be registered");
+			logger.info("NO used coupon needed to be registered");
 		}
 		
 		

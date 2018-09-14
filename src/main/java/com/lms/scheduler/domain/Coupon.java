@@ -91,15 +91,16 @@ public class Coupon implements Serializable{
 		this.claimNo = claimNo;
 	}
 
-	public void dumpDetails() {
-		
-		System.out.println("couponId : " + couponId );
-		System.out.println("valueAmount : " + valueAmount );
-		System.out.println("expiryDate : " + expiryDate );
-		System.out.println("usedDate : " + usedDate );
-		System.out.println("redeemDate : " + redeemDate );
-		System.out.println("mallId : " + mallId );
-		System.out.println("shopId : " + shopId );
+	public String dumpDetails() {
+		StringBuffer sb = new StringBuffer(); 
+		sb.append("couponId : " + couponId);
+		sb.append("valueAmount : " + valueAmount );
+		sb.append("usedDate : " + usedDate  );
+		sb.append("expiryDate : " + expiryDate);
+		sb.append("redeemDate : " + redeemDate);
+		sb.append("mallId : " + mallId);
+		sb.append("shopId : " + shopId );
+		return sb.toString();
 	}
 	
 	

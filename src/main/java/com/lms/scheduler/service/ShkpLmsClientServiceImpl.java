@@ -3,6 +3,8 @@ package com.lms.scheduler.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.http.HttpEntity;
@@ -26,7 +28,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
-		
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Value("${shk.lms.regUsedECoupon.url}")
 	private static final String SHK_LMS_REG_ISSUED_EGIFT_API_URI = "http://dev.kaishing.hk/mobile/liveeasy/hs/hs_mso_msg"; 
 	
@@ -57,16 +61,19 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 		String jsonSend = null;
 		try {
 			jsonSend = mapper.writeValueAsString(postJsonObj);
-			System.out.println("json string is " + jsonSend);
+			logger.info("json string is " + jsonSend);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("JsonParseException - writeValueAsString");
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("JsonMappingException - writeValueAsString");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("IOException - writeValueAsString");
 		}
 		if ( jsonSend != null ) {
 			HttpHeaders headers = new HttpHeaders();
@@ -77,19 +84,22 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 			if ( responseStr != null ) {
 				try {
 					RedeemedECouponLmsReplyJson replyJsonObj = mapper.readValue(responseStr, RedeemedECouponLmsReplyJson.class);
-					System.out.println("redeemed reply JSON obj is : " + replyJsonObj );
+					logger.info("redeemed reply JSON obj is : " + replyJsonObj );
 					return replyJsonObj;
 				} catch (JsonParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("JsonParseException - readValue");
 					return null;
 				} catch (JsonMappingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("JsonMappingException - readValue");
 					return null;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("IOException - readValue");
 					return null;
 				}
 			}
@@ -113,16 +123,19 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 		String jsonSend = null;
 		try {
 			jsonSend = mapper.writeValueAsString(postJsonObj);
-			System.out.println("json string is " + jsonSend);
+			logger.info("json string is " + jsonSend);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("JsonParseException - writeValueAsString");
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("JsonMappingException - writeValueAsString");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error("IOException - writeValueAsString");
 		}
 		if ( jsonSend != null ) {
 			HttpHeaders headers = new HttpHeaders();
@@ -137,14 +150,17 @@ public class ShkpLmsClientServiceImpl implements ShkpLmsClientService {
 				} catch (JsonParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("JsonParseException - readValue");
 					return null;
 				} catch (JsonMappingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("JsonMappingException - readValue");
 					return null;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("IOException - readValue");
 					return null;
 				}
 			}
